@@ -36,6 +36,8 @@ El modelo de clases principal incluye:
 
 A continuación, se presenta un diagrama simple que ilustra la relación entre las clases principales del sistema:
 
+
+
 classDiagram
 
     class App {
