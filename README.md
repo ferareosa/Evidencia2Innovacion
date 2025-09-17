@@ -76,6 +76,7 @@ classDiagram
     App --> Database : usa
     App --> Contacto : manipula
     Database ..> Contacto : persiste
+```
 
 ### Explicación del Diagrama:
 
@@ -139,4 +140,5 @@ La conexión a la base de datos se maneja en la clase _Database_ con el módulo 
 3. **Ejecución**: `cursor.execute()` ejecuta sentencias SQL (con `?` para prevenir inyección).
 4. **Confirmación**: `conn.commit()` guarda los cambios permanentemente.
 5. **Cierre**: `conn.close()` libera recursos al salir (se ejecuta en `on_closing` en _gui.py_).
-```
+
+---
