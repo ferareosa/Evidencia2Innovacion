@@ -37,6 +37,7 @@ El modelo de clases principal incluye:
 A continuación, se presenta un diagrama simple que ilustra la relación entre las clases principales del sistema:
 
 classDiagram
+
     class App {
       - root
       - db
@@ -75,7 +76,6 @@ classDiagram
     App --> Database : usa
     App --> Contacto : manipula
     Database ..> Contacto : persiste
-
 
 ### Explicación del Diagrama:
 
