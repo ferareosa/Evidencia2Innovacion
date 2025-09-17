@@ -36,22 +36,46 @@ El modelo de clases principal incluye:
 
 A continuación, se presenta un diagrama simple que ilustra la relación entre las clases principales del sistema:
 
-+---------------------------+ +---------------------------------+ +-------------------------+
-| App |---| Database |---| Contacto |
-+---------------------------+ +---------------------------------+ +-------------------------+
-| - root | | - db_name | | - id |
-| - db | | - conn | | - nombre |
-| - formulario | | - cursor | | - apellido |
-| - tree | +---------------------------------+ | - telefono |
-+---------------------------+ | + conectar() | | - email |
-| + **init**() | | + crear_tabla() | +-------------------------+
-| + on_closing() | | + insertar_contacto(contacto) | | + **init**() |
-| + actualizar() | | + listar_contactos() | | + **str**() |
-| + eliminar() | | + modificar_contacto(contacto) | +-------------------------+
-+---------------------------+ | + eliminar_contacto(id) |
-| + buscar_contacto(campo, valor) |
-| + cerrar_conexion() |
-+---------------------------------+
+classDiagram
+    class App {
+      - root
+      - db
+      - formulario
+      - tree
+      + __init__()
+      + on_closing()
+      + actualizar()
+      + eliminar()
+    }
+
+    class Database {
+      - db_name
+      - conn
+      - cursor
+      + conectar()
+      + crear_tabla()
+      + insertar()
+      + listar()
+      + modificar()
+      + eliminar()
+      + buscar()
+      + cerrar()
+    }
+
+    class Contacto {
+      - id
+      - nombre
+      - apellido
+      - telefono
+      - email
+      + __init__()
+      + __str__()
+    }
+
+    App --> Database : usa
+    App --> Contacto : manipula
+    Database ..> Contacto : persiste
+
 
 ### Explicación del Diagrama:
 
