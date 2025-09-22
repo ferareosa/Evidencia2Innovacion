@@ -9,7 +9,9 @@
 
 ---
 
-![Mira el demo en YouTube](https://img.youtube.com/vi/2XFsa0bGuqw/0.jpg)](https://youtu.be/2XFsa0bGuqw?si=RQ_rRDqN3YtAqUwa)
+## Video
+
+[![Mira el demo en YouTube](https://img.youtube.com/vi/2XFsa0bGuqw/0.jpg)](https://youtu.be/2XFsa0bGuqw?si=RQ_rRDqN3YtAqUwa)]
 
 ---
 
