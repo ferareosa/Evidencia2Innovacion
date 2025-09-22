@@ -9,32 +9,44 @@
 
 ---
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2XFsa0bGuqw?si=fk1HaXihUPUV-pI6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+---
+
 ## Instalador
 
-[Click aqui para descargar](https://drive.google.com/file/d/1B06Xxp0Ywgqoo7_n9pbPmN_Z2dLpdUyl/view?usp=sharing)
+Para la instalación del sistema ejecutable en windows se dispone del siguiente instalador:
+
+[Click aquí para descargar](https://drive.google.com/file/d/1B06Xxp0Ywgqoo7_n9pbPmN_Z2dLpdUyl/view?usp=sharing)
+
+---
 
 ## Índice
 
-1. [Modelo de Clases](#1-modelo-de-clases)
-2. [Modelo de Datos](#2-modelo-de-datos)
-3. [Investigación Teórica](#3-investigación-teórica)
-   - [3.1. Programación Orientada a Objetos (POO)](#31-programación-orientada-a-objetos-poo)
-   - [3.2. Sentencias SQL (DDL, DML, DCL)](#32-sentencias-sql-ddl-dml-dcl)
-   - [3.3. Proceso de Conexión a SQLite en Python](#33-proceso-de-conexión-a-sqlite-en-python)
+- [1. Modelo de Clases](#1-modelo-de-clases)
+  - [1.1. Diagrama UML](#11-diagrama-uml)
+  - [1.2. Explicación de Relaciones](#12-explicación-de-relaciones)
+- [2. Base de Datos](#2-base-de-datos)
+- [3. Lenguajes y Paradigmas Utilizados](#3-lenguajes-y-paradigmas-utilizados)
+  - [3.1. Programación Orientada a Objetos (POO)](#31-programación-orientada-a-objetos-poo)
+  - [3.2. Lenguaje de Consultas SQL](#32-lenguaje-de-consultas-sql)
+- [4. Conexión de la Base de Datos con el Programa](#4-conexión-de-la-base-de-datos-con-el-programa)
 
 ---
 
 ## 1. Modelo de Clases
 
-El diseño del sistema se basa en el paradigma de la Programación Orientada a Objetos (POO), que permite estructurar el código de manera modular y reutilizable. El proyecto está organizado en diferentes clases y módulos para separar responsabilidades y facilitar su mantenimiento.
+El diseño del sistema se basa en el paradigma de la **Programación Orientada a Objetos (POO)**, que permite estructurar el código de manera modular y reutilizable. El proyecto está organizado en diferentes clases y módulos para separar responsabilidades y facilitar su mantenimiento.
 
-El modelo de clases principal incluye:
+Las clases principales son:
 
-- **Clase Contacto** (en _models.py_): Esta clase es la plantilla que modela un contacto individual. Sus atributos son las propiedades que describen a un contacto, como el nombre, el apellido, el teléfono y el email.
-- **Clase Database** (en _database.py_): Esta clase encapsula toda la lógica para el almacenamiento y la recuperación de los datos. Se encarga de gestionar la conexión con la base de datos SQLite y de ejecutar todas las consultas SQL. Esto es un claro ejemplo de encapsulamiento, ya que la complejidad de la gestión de la base de datos queda oculta del resto del programa.
-- **Clase App** (en _gui.py_): Esta clase representa la Interfaz Gráfica de Usuario (GUI). Actúa como el puente entre el usuario y la clase Database. Al interactuar con la interfaz (por ejemplo, al hacer clic en un botón), la clase App llama a los métodos de la clase Database sin necesidad de conocer los detalles de las sentencias SQL que se ejecutan internamente.
+- **Clase Contacto** (en _models.py_): Modela un contacto individual con atributos como `id`, `nombre`, `apellido`, `telefono` y `email`. Incluye un constructor (`__init__`) y el método `__str__` para representar al objeto como texto.
+- **Clase Database** (en _database.py_): Encapsula la lógica de conexión, almacenamiento y recuperación de datos en **SQLite**. Administra la creación de tablas, inserción, consulta, modificación y eliminación de registros. El uso de placeholders `(?, ?)` en las sentencias SQL asegura la prevención de inyecciones de código.
+- **Clase App** (en _gui.py_): Representa la interfaz gráfica de usuario (GUI). Es el puente entre el usuario y la base de datos. Por ejemplo, al presionar un botón en la interfaz, se ejecuta un método de `Database` que manipula objetos `Contacto` sin que la GUI necesite conocer la lógica SQL subyacente.
 
-A continuación, se presenta un diagrama simple que ilustra la relación entre las clases principales del sistema:
+---
+
+### 1.1. Diagrama UML
 
 ```mermaid
 classDiagram
@@ -78,67 +90,107 @@ classDiagram
     Database ..> Contacto : persiste
 ```
 
-### Explicación del Diagrama:
+---
 
-- **App → Database**: La clase _App_ (la interfaz de usuario gui) utiliza una instancia de la clase _Database_ para interactuar con la base de datos. En el código, esto se muestra en la línea `self.db = Database()`. Esta relación se conoce como **agregación**.
-- **Database → Contacto**: La clase _Database_ manipula objetos de la clase _Contacto_. Por ejemplo, cuando se inserta un contacto, se le pasa un objeto _Contacto_ a la base de datos para que lo guarde. Esto también es una **relación de dependencia**.
+### 1.2. Explicación de Relaciones
 
-En resumen, la clase _App_ no necesita saber cómo se guardan los datos, solo le pide a _Database_ que lo haga. A su vez, _Database_ se encarga de convertir la información del objeto _Contacto_ en una sentencia SQL para la base de datos. Esta es una excelente demostración de cómo el **encapsulamiento y la modularidad** de la POO funcionan en la práctica.
+- **App y Database (Agregación):**  
+  La clase `App` incluye una instancia de la clase `Database`. Esta relación indica que la aplicación necesita la base de datos para funcionar, pero ambas pueden existir de manera independiente.
+
+- **App y Contacto (Dependencia):**  
+  La clase `App` crea y gestiona objetos de la clase `Contacto`. La dependencia se da porque `App` utiliza la información de los contactos para operar.
+
+- **Database y Contacto (Asociación):**  
+  La clase `Database` interactúa directamente con instancias de la clase `Contacto`, almacenando y recuperando sus datos en la base de datos.
 
 ---
 
-## 2. Modelo de Datos
+## 2. Base de Datos
 
-Para la persistencia de los datos, el sistema utiliza una base de datos relacional SQLite. El modelo de datos consiste en una única tabla llamada **Contactos**, la cual almacena la información de cada contacto.
+La base de datos utilizada es SQLite y se denomina **contactos.db**. Se implementa una tabla llamada **Contactos** con los siguientes campos:
 
-### Estructura de la tabla:
-
-| Campo    | Tipo de Dato | Restricciones             | Descripción                                                          |
-| -------- | ------------ | ------------------------- | -------------------------------------------------------------------- |
-| id       | INTEGER      | PRIMARY KEY AUTOINCREMENT | Identificador único del contacto. Se genera automáticamente.         |
-| nombre   | TEXT         | NOT NULL                  | Nombre del contacto. No puede ser nulo.                              |
-| apellido | TEXT         | NOT NULL                  | Apellido del contacto. No puede ser nulo.                            |
-| telefono | TEXT         | NOT NULL                  | Número de teléfono del contacto.                                     |
-| email    | TEXT         | NOT NULL UNIQUE           | Dirección de correo electrónico. Debe ser única y no puede ser nula. |
+| Campo    | Tipo    | Descripción                                   |
+| -------- | ------- | --------------------------------------------- |
+| id       | INTEGER | Identificador único de cada contacto (PK).    |
+| nombre   | TEXT    | Nombre del contacto.                          |
+| telefono | TEXT    | Número de teléfono del contacto.              |
+| email    | TEXT    | Dirección de correo electrónico del contacto. |
 
 ---
 
-## 3. Investigación Teórica
+## 3. Lenguajes y Paradigmas Utilizados
 
 ### 3.1. Programación Orientada a Objetos (POO)
 
-La POO es un paradigma de programación que utiliza **objetos** para modelar el mundo real, organizando el código en torno a datos y comportamientos.
+La POO es un paradigma que organiza el código en **clases y objetos**, facilitando la reutilización y el mantenimiento.
 
-- **Clases**: Una clase es una plantilla o plano para crear objetos. Ejemplo: la clase _Contacto_ define los atributos (_nombre, apellido, teléfono, email_) y el constructor (`__init__`).
-- **Objetos**: Una instancia concreta de una clase. Ejemplo: un nuevo contacto creado con datos como `nombre="Juan"`, `email="juan@ejemplo.com"`.
-- **Atributos**: Propiedades que describen a un objeto (en _Contacto_: `id, nombre, apellido, telefono, email`).
-- **Métodos**: Acciones que los objetos pueden realizar. Ejemplo: en _Database_, el método `insertar_contacto()` guarda un nuevo contacto en la base de datos.
+En este sistema:
+
+- **Clase `Contacto`:** Modela los datos y comportamientos de un contacto individual.
+- **Clase `Database`:** Encapsula la lógica de conexión y operaciones con la base de datos.
+- **Clase `App`:** Coordina las acciones de la aplicación, gestionando la interacción entre contactos y base de datos.
+
+### 3.2. Lenguaje de Consultas SQL
+
+Se emplea **SQL** para interactuar con la base de datos. Los principales tipos de comandos utilizados son:
+
+- **DDL (Lenguaje de Definición de Datos):** Define la estructura de la base de datos.
+
+  - Ejemplo:
+    ```sql
+    CREATE TABLE Contactos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        telefono TEXT NOT NULL,
+        email TEXT NOT NULL
+    );
+    ```
+
+- **DML (Lenguaje de Manipulación de Datos):** Permite insertar, modificar y eliminar datos.
+
+  - Ejemplo (usando placeholders en Python con `sqlite3`):
+    ```python
+    cursor.execute("INSERT INTO Contactos (nombre, telefono, email) VALUES (?, ?, ?)", (nombre, telefono, email))
+    ```
+
+- **DCL (Lenguaje de Control de Datos):** Aunque SQLite no implementa gestión de usuarios como otros motores, en teoría este tipo de comandos controla permisos de acceso a la base de datos.
 
 ---
 
-### 3.2. Sentencias SQL (DDL, DML, DCL)
+## 4. Conexión de la Base de Datos con el Programa
 
-Las sentencias SQL se clasifican según su propósito:
+La conexión entre Python y SQLite se realiza con el módulo **`sqlite3`**.  
+La secuencia de pasos es la siguiente:
 
-- **DDL (Lenguaje de Definición de Datos):** define la estructura de la base.
-  - `CREATE TABLE`: crea la tabla _Contactos_ si no existe (método `crear_tabla`).
-- **DML (Lenguaje de Manipulación de Datos):** manipula datos en las tablas.
-  - `INSERT`: Alta de contacto (`insertar_contacto`).
-  - `SELECT`: Consulta de contactos (`listar_contactos`, `buscar_contacto`).
-  - `UPDATE`: Modificación de contacto (`modificar_contacto`).
-  - `DELETE`: Baja de contacto (`eliminar_contacto`).
-- **DCL (Lenguaje de Control de Datos):** gestiona permisos (`GRANT`, `REVOKE`). No se usan en el código, pero son clave en entornos multiusuario.
+1. **Importar la librería:**
+   ```python
+   import sqlite3
+   ```
 
 ---
 
-### 3.3. Proceso de Conexión a SQLite en Python
+2. **Establecer conexión con la base de datos:**
 
-La conexión a la base de datos se maneja en la clase _Database_ con el módulo estándar `sqlite3`.
+```python
+conexion = sqlite3.connect("contactos.db")
+```
 
-1. **Conexión**: `sqlite3.connect()` abre la base o la crea si no existe.
-2. **Cursor**: `conn.cursor()` permite ejecutar comandos SQL.
-3. **Ejecución**: `cursor.execute()` ejecuta sentencias SQL (con `?` para prevenir inyección).
-4. **Confirmación**: `conn.commit()` guarda los cambios permanentemente.
-5. **Cierre**: `conn.close()` libera recursos al salir (se ejecuta en `on_closing` en _gui.py_).
+3. **Crear un cursor para ejecutar sentencias SQL:**
+   ```python
+   cursor = conexion.cursor()
+   ```
+
+---
+
+4. **Ejecutar comandos SQL (ejemplo con INSERT):**
+
+```python
+cursor.execute("INSERT INTO Contactos (nombre, telefono, email) VALUES (?, ?, ?)", (nombre, telefono, email))
+```
+
+5. **Guardar los cambios en la base de datos:**
+   ```python
+   conexion.commit()
+   ```
 
 ---
