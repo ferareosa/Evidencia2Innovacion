@@ -9,7 +9,7 @@
 
 ---
 
-![Evidencia2innovacion](Evidencia2innovacion.mp4)
+<video src="Evidencia2innovacion.mp4" controls></video>
 
 ---
 
